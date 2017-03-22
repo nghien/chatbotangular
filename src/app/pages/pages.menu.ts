@@ -3,17 +3,17 @@ export const PAGES_MENU = [
     path: 'pages',
     children: [
       {
-        path: 'dashboard',
-        data: {
-          menu: {
-            title: 'Dashboard',
-            icon: 'ion-android-home',
-            selected: false,
-            expanded: false,
-            order: 0
-          }
-        }
-      },
+      //   path: 'dashboard',
+      //   data: {
+      //     menu: {
+      //       title: 'Dashboard',
+      //       icon: 'ion-android-home',
+      //       selected: false,
+      //       expanded: false,
+      //       order: 0
+      //     }
+      //   }
+      // },
       // {
       //   path: 'editors',
       //   data: {
@@ -315,18 +315,18 @@ export const PAGES_MENU = [
       //     }
       //   ]
       // },
-      {
-        path: '',
-        data: {
-          menu: {
-            title: 'External Link',
-            url: 'http://akveo.com',
-            icon: 'ion-android-exit',
-            order: 800,
-            target: '_blank'
-          }
-        }
-      }
+      // {
+      //   path: '',
+      //   data: {
+      //     menu: {
+      //       title: 'External Link',
+      //       url: 'http://akveo.com',
+      //       icon: 'ion-android-exit',
+      //       order: 800,
+      //       target: '_blank'
+      //     }
+      //   }
+      // }
     ]
   }
 ];

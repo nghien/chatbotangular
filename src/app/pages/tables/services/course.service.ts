@@ -4,7 +4,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import 'rxjs/Rx';
 
-import { IDomain } from './../defines/course.interface';
+import { ICourse } from './../defines/course.interface';
 
 @Injectable()
 export class CourseService {
@@ -14,15 +14,15 @@ export class CourseService {
 
 	}
 
-	getItems(): Observable<IDomain[]> {
+	getItems(): Observable<ICourse[]> {
 		return this._httpService.get(this.apiUrl).map(this.extractData).catch(this.handleError);
 	}
 
-	getItem(id: number): Observable<IDomain> {
+	getItem(id: number): Observable<ICourse> {
 		return this._httpService.get(this.apiUrl + id).map(this.extractData).catch(this.handleError);
 	}
 
-	addItem(course: IDomain): Observable<IDomain> {
+	addItem(course: ICourse): Observable<ICourse> {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
     	let options = new RequestOptions({ headers: headers });
 
@@ -30,7 +30,7 @@ export class CourseService {
 								.map(this.extractData).catch(this.handleError);
 	}
 
-	editItem(course: IDomain): Observable<IDomain> {
+	editItem(course: ICourse): Observable<ICourse> {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
     	let options = new RequestOptions({ headers: headers });
 
@@ -38,7 +38,7 @@ export class CourseService {
 								.map(this.extractData).catch(this.handleError);
 	}
 
-	deleteItem(id: number): Observable<IDomain> {
+	deleteItem(id: number): Observable<ICourse> {
 		return this._httpService.delete(this.apiUrl + id)
 								.map(this.extractData).catch(this.handleError);
 	}

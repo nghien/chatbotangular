@@ -1,116 +1,169 @@
 import { Component } from '@angular/core';
 
-import { SmartTablesService } from './smartTables.service';
-import { LocalDataSource } from 'ng2-smart-table';
+//import { SmartTablesService } from './smartTables.service';
+import { LocalDataSource, ServerDataSource } from 'ng2-smart-table';
+
+import { BasicExampleLoadService } from './basic-example-load.service';
 
 import 'style-loader!./smartTables.scss';
-
+import { Http } from '@angular/http/src/http';
+import { CourseService } from "../../services/course.service";
+import { ICourse } from "../../defines/course.interface";
 @Component({
   selector: 'smart-tables',
-  templateUrl: './smartTables.html',
+  templateUrl: `
+    <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (deleteConfirm)="onDeleteConfirm($event)"
+      (editConfirm)="onSaveConfirm($event)"
+      (createConfirm)="onCreateConfirm($event)"></ng2-smart-table>
+  `
 })
+
 export class SmartTables {
 
   query: string = '';
   valid:boolean = false;
 
-  settings = {
-    add: {
-      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-      createButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="ion-edit"></i>',
-      saveButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-    },
+
+  // settings = {
+  //   columns: {
+  //   
+  //   }
+  // };
+
+   settings = {
     delete: {
-      deleteButtonContent: '<i class="ion-trash-a"></i>',
       confirmDelete: true
     },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number'
-      },
-      firstName: {
-        title: 'First',
-       // type: 'textarea'
-        filter: {
-          type: 'list',
-          config: {
-            selectText: 'Select...',
-            list: [
-              { value: 'Glenna Reichert', title: 'Glenna Reichert' },
-              { value: 'Kurtis Weissnat', title: 'Kurtis Weissnat' },
-              { value: 'Chelsey Dietrich', title: 'Chelsey Dietrich' }
-            ]
-          }
-        }
+    add: {
+      confirmCreate: true
+    },
+    edit: {
+      confirmSave: true
+    },
+     columns: {
 
 
-      },
-      lastName: {
-        title: 'Last Name',
-        type: 'string'
-      },
-        lastName2: {
-        title: 'Last Name',
-        type: 'string'
-      },
-        lastName3: {
-        title: 'Last Name',
-        type: 'string'
-      },
-        lastName4: {
-        title: 'Last Name',
-        type: 'string'
-      },
-        lastName5: {
-        title: 'Last Name',
-        type: 'string'
-      },
-        lastName6: {
-        title: 'Last Name',
-        type: 'string'
-      },
 
-
-      username: {
-        title: 'Username',
-       // type: 'string'
-       editor: {
-          type: 'textarea'
-        }
+      Id: {
+        title: 'Id'
       },
-      email: {
-        title: 'E-mail',
-        type: 'string'
+      DOMAIN_ID: {
+        title: 'DOMAIN_ID'
       },
-      age: {
-        title: 'Age',
-        type: 'number'
+      DOMAIN: {
+        title: 'DOMAIN'
       }
+
+
+      //   id: {
+      //   title: 'ID'
+      // },
+      // albumId: {
+      //   title: 'Album'
+      // },
+      // title: {
+      //   title: 'Title'
+      // },
+      // url: {
+      //   title: 'Url'
+      // }
+
     }
   };
 
-  source: LocalDataSource = new LocalDataSource();
+  //source: LocalDataSource = new LocalDataSource();
 
-  constructor(protected service: SmartTablesService) {
-    this.service.getData().then((data) => {
-      this.source.load(data);
-    });
-  }
+ // constructor(protected service: CourseService) {
+   // this.service.getItems();
+ // }
+
+  // constructor(protected service: SmartTablesService) {
+  //   this.source = new LocalDataSource();
+
+  //   this.service.getData().then((data) => {
+  //     this.source.load(data);
+  //   })
+  // }
+
+  source: ServerDataSource;
+
+  constructor(http: Http, protected service: CourseService) {
+ 
+   this.source = new ServerDataSource(http, { endPoint: 'http://localhost:9823/api/Domains/' });
+   // this.source = new ServerDataSource(http, { endPoint: 'https://jsonplaceholder.typicode.com/photos' });
+
+//  this.service.getData().then((data) => {
+//       this.source.load(data);
+//     })
+}
+
+
+  //   constructor(http: Http) {
+ 
+  //   this.source = new ServerDataSource(http, { endPoint: 'http://localhost:9823/api/Domains/' });
+  // }
 
   onDeleteConfirm(event): void {
     console.log(event);
-    this.valid = true;
-    if (window.confirm('Are you sure you want to delete?')) {
+   // this.service.deleteItem(event.data.Id);
+   console.log(this.source);
+ //  this.source.data.remove(event.data);
+//   this.source.data
 
+		//	(data: ICourse) => this.removeCourseFromArray(id)
+//		(data: ICourse) => this.getItems()
+
+  //  this.valid = true;
+    if (window.confirm('Are you sure you want to delete?')) {
+	    // this.service.deleteItem(event.data.Id).subscribe(
+      // );
+   //   event.newData['name'] += ' + added in code';
       event.confirm.resolve();
     } else {
       event.confirm.reject();
     }
   }
+
+
+  onSaveConfirm(event): void {
+    console.log(event.newData);
+    // 	let course: ICourse	= {
+		// 	DOMAIN		: event.newData.DOMAIN,
+		// 	Status		: event.newData.Status
+		// };
+
+     
+     this.service.editItem(event.newData).subscribe(
+    
+    
+		);
+       event.confirm.resolve(event.newData)
+   // this.confirm.confirmSave(true)
+//     event.newData['name'] += ' + added in code';
+  }
+
+  onCreateConfirm(event): void {
+
+    console.log(event.newData);
+	let course: ICourse	= {
+			DOMAIN		: event.newData.DOMAIN,
+			Status		: event.newData.Status
+		};
+    	this.service.addItem(event.newData).subscribe(
+          event.confirm.resolve(event.newData)
+		//	(data: ICourse) => this.updateCourseFromArray(this.selectedCourse)
+		);
+    // if (window.confirm('Are you sure you want to create?')) {
+
+    //   event.confirm.resolve(event.newData);
+    // } else {
+    //   event.confirm.reject();
+    // }
+  }
+
+
+
 }

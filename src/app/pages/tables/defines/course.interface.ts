@@ -1,4 +1,4 @@
-export interface IDomain {
+export interface ICourse {
 	Id?: number;
 	DOMAIN: string;
 	Status: boolean;
